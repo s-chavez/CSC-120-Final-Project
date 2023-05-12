@@ -10,25 +10,23 @@ import java.lang.Thread;
  */
 public class GUI extends Frame implements ActionListener {
   /** User's chosen Pokemon type */
-  static String chosenType;
+  public static String chosenType;
   /** Label for Welcome Message*/
-  JLabel messageLabel;
+  private JLabel messageLabel;
   /** Button used to select Pokemon */
-  JButton selectButton;
+  private JButton selectButton;
   /** Button used to scroll right */
-  JButton rightArrow;
+  private JButton rightArrow;
   /** Button used to scroll left */
-  JButton leftArrow;
+  private JButton leftArrow;
   /** Label for the image illustrating the Pokemon type */
-  JLabel pokemonLabel;
+  private JLabel pokemonLabel;
   /** Panel for messageLabel */
-  JPanel messagePanel;
+  private JPanel messagePanel;
   /** index of current Pokemon type image */
-  int index;
-  /** ImageIcon of the user's selected Pokemon */
-  ImageIcon selectedPokemon;
+  private int index;
   /** ArrayList of the images of the Pokemon types */
-  ArrayList < String > pokemonImages;
+  private ArrayList < String > pokemonImages;
 
   /**
    * Constructs a new GUI.
@@ -45,7 +43,7 @@ public class GUI extends Frame implements ActionListener {
     /** How to arrange the window. */
     frame.getContentPane().setLayout(new BorderLayout());
     /** Sets background to new Color. */
-    this.setBackground(new Color(193,240,251));
+    this.setBackground(new Color(193, 240, 251));
 
     /** Creates new JLabel. */
     pokemonLabel = new JLabel();
@@ -59,9 +57,9 @@ public class GUI extends Frame implements ActionListener {
     /** Creates new JPanel. */
     messagePanel = new JPanel();
     /** Sets background of the panel. */
-    messagePanel.setBackground(new Color(232,189,255));
+    messagePanel.setBackground(new Color(232, 189, 255));
     /** Sets size of the panel. */
-    messagePanel.setSize(100,100);
+    messagePanel.setSize(100, 100);
 
     /** Creates a new JLabel. */
     messageLabel = new JLabel();
@@ -81,7 +79,7 @@ public class GUI extends Frame implements ActionListener {
     /** Creates new JButton. */
     selectButton = new JButton("Press here to choose this starter Pokemon.");
     /** Colors the background of the button. */
-    selectButton.setBackground(new Color(220,249,168));
+    selectButton.setBackground(new Color(220, 249, 168));
     /** Sets the preferred button size. */
     selectButton.setPreferredSize(new Dimension(100, 60));
     /** Sets the font, style, and size to the button's text. */
@@ -100,7 +98,7 @@ public class GUI extends Frame implements ActionListener {
     /** Sets font, style, and size to button's text. */
     rightArrow.setFont(new Font("Times New Roman", Font.PLAIN, 40));
     /** Colors button's background. */
-    rightArrow.setBackground(new Color(249,206,238));
+    rightArrow.setBackground(new Color(249, 206, 238));
     /** Adds button to East section of layout. */
     add(rightArrow, BorderLayout.EAST);
 
@@ -113,7 +111,7 @@ public class GUI extends Frame implements ActionListener {
     /** Sets font, style, and size to button's text. */
     leftArrow.setFont(new Font("Times New Roman", Font.PLAIN, 40));
     /** Colors button's background. */
-    leftArrow.setBackground(new Color(249,206,238));
+    leftArrow.setBackground(new Color(249, 206, 238));
     /** Adds button to West section of layout. */
     add(leftArrow, BorderLayout.WEST);
 
@@ -154,27 +152,26 @@ public class GUI extends Frame implements ActionListener {
       index++;
       if (index == pokemonImages.size()) {
         index = 0;
-        }
-      } else if (evt.getSource() == leftArrow){
-        index--;
-        if (index < 0) {
-          index = pokemonImages.size() - 1;
-        } 
-      } else if (evt.getActionCommand().equals("Press here to choose this starter Pokemon.")) {
-      selectedPokemon = new ImageIcon(pokemonImages.get(index));
+      }
+    } else if (evt.getSource() == leftArrow) {
+      index--;
+      if (index < 0) {
+        index = pokemonImages.size() - 1;
+      }
+    } else if (evt.getActionCommand().equals("Press here to choose this starter Pokemon.")) {
       String starter = pokemonImages.get(index);
       if (starter.equals("DRAGON.png")) {
-      chosenType = "dragon";
+        chosenType = "dragon";
       } else if (starter.equals("FAIRY.jpg")) {
-      chosenType = "fairy";
+        chosenType = "fairy";
       } else if (starter.equals("FIRE.png")) {
-      chosenType = "fire";
+        chosenType = "fire";
       } else if (starter.equals("GRASS.png")) {
-      chosenType = "grass";
+        chosenType = "grass";
       } else if (starter.equals("NORMAL.jpg")) {
-      chosenType = "normal";
+        chosenType = "normal";
       } else {
-      chosenType = "water";
+        chosenType = "water";
       }
       System.out.println("You have chosen Pokemon Type: " + chosenType);
       selectButton.setText("Since you've pressed this button, minimize this window.");
@@ -195,6 +192,7 @@ public class GUI extends Frame implements ActionListener {
    * @param args The command line arguments
    */
   public static void main(String[] args) {
+    // new GUI();
     System.out.println("Welcome to PokePunch! It's time to start your journey.");
     System.out.println("Get ready for an interactive experience!");
     System.out.println("Soon, a new screen will appear with Pokemon for you to choose from.");
@@ -209,6 +207,6 @@ public class GUI extends Frame implements ActionListener {
         Thread.sleep(150);
       } catch (InterruptedException e) {}
     }
-    new Battle();
+    Battle.startBattle();
   }
 }

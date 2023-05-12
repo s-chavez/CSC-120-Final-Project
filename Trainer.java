@@ -10,11 +10,13 @@ public class Trainer extends Pokemon {
   /** Trainer's trainer_level */
   private int trainer_level;
   /** static ArrayList of attacks the Trainer has learned */
-  static ArrayList<String> learned_attacks = new ArrayList<>();
+  private static ArrayList < String > learned_attacks = new ArrayList < > ();
+  /** static ArrayList of distinct attacks the Trainer has learned */
+  public static ArrayList < String > distinct_learned_attacks = new ArrayList < > ();
   /** static instance of Pokemon */
-  static Pokemon pokemon;
+  public static Pokemon pokemon;
   /** The pokemon that belongs to the Trainer's XP */
-  static int pokemonXP;
+  private static int pokemonXP;
 
   /**
    * Constructor for Trainer.
@@ -27,7 +29,7 @@ public class Trainer extends Pokemon {
     name = Input.getScanner().nextLine();
     System.out.println("Hope you enjoy, " + name + "!");
     this.trainer_level = 1;
-    learned_attacks = new ArrayList<>();
+    learned_attacks = new ArrayList < > ();
   }
 
   /**
@@ -57,9 +59,10 @@ public class Trainer extends Pokemon {
   /**
    * Allows user to learn new attacks by typing in the name of the attack.
    * User's pokemon earns 50 XP if all attacks are learned.
+   * Checks for duplicate learned attacks.
    */
   public static void learn() {
-    ArrayList<String> full_attack_list = new ArrayList<>();
+    ArrayList < String > full_attack_list = new ArrayList < > ();
     full_attack_list.add("punch");
     full_attack_list.add("kick");
     full_attack_list.add("slam");
@@ -77,8 +80,8 @@ public class Trainer extends Pokemon {
         learned_attacks.add("blast");
       } else {
         System.out.println(learn_attack +
-            " is not a valid attack. Please enter one of the following: punch, kick, slam, blast.");
-            learn();
+          " is not a valid attack. Please enter one of the following: punch, kick, slam, blast.");
+        learn();
       }
       if (learned_attacks.containsAll(full_attack_list)) {
         try {
@@ -87,8 +90,12 @@ public class Trainer extends Pokemon {
           pokemonXP = pokemon.getXp();
         }
         System.out.println(
-            "You have unlocked all possible attacks! Your pokemon has earned 50 XP. Your pokemon's XP is now" + pokemonXP);
+          "You have unlocked all possible attacks! Your pokemon has earned 50 XP. Your pokemon's XP is now" + pokemonXP);
         break;
+      }
+      if (learned_attacks.size() == 0) {
+        System.out.println("You must learn at least one attack.");
+        learn();
       }
       System.out.println("Do you want to continue learning attacks? Type Y for yes or N for no.");
       String userStopLearning = Input.getScanner().nextLine();
@@ -100,9 +107,15 @@ public class Trainer extends Pokemon {
         throw new RuntimeException("That was not a valid option. Please try again.");
       }
     }
+
     System.out.println("Here are the attacks you have learned:");
     for (int i = 0; i < learned_attacks.size(); i++) {
-      System.out.println(learned_attacks.get(i));
+      if (!distinct_learned_attacks.contains(learned_attacks.get(i))) {
+        distinct_learned_attacks.add(learned_attacks.get(i));
+      }
+    }
+    for (int i = 0; i < distinct_learned_attacks.size(); i++) {
+      System.out.println(distinct_learned_attacks.get(i));
     }
   }
 
@@ -110,19 +123,16 @@ public class Trainer extends Pokemon {
    * Creates pokemon, calls chooseStarterType, asks if Trainer wants to learn new attacks.
    */
   public static void start() {
-    // Trainer trainer = new Trainer();
-    // System.out.println("Welcome new trainer! Please enter your Trainer name: ");
-    // trainer.name = Input.getScanner().nextLine();
-    // System.out.println("Hope you enjoy, " + trainer.name + "!");
+    System.out.println("Welcome new trainer! Please enter your Trainer name: ");
+    name = Input.getScanner().nextLine();
+    System.out.println("Hope you enjoy, " + name + "!");
     Pokemon myPokemon = new Pokemon();
     myPokemon.chooseStarterType();
     System.out.println("As a Trainer, learning new attacks is a great way to prepare for battle.");
-    System.out.println("Would you like to learn new attacks? Enter Y for yes or N for no.");
+    System.out.println("Enter Y to begin learning new attacks.");
     String user_learns = Input.getScanner().nextLine();
     if (user_learns.equalsIgnoreCase("Y")) {
       Trainer.learn();
-    } else if (user_learns.equalsIgnoreCase("N")) {
-      System.out.println("Come back later, have a great day!");
     } else {
       System.out.println("That was not a valid option. Please try again.");
       Trainer.learn();
@@ -134,7 +144,6 @@ public class Trainer extends Pokemon {
    * @param args The command line args
    */
   public static void main(String[] args) {
-    Trainer myTrainer = new Trainer();
-    myTrainer.start();
+    start();
   }
 }
